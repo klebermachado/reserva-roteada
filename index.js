@@ -1,12 +1,16 @@
 const inicioEvento = new Date('2021-01-01T08:00:00')
-const terminoEvento = new Date('2021-01-01T12:00:00')
+const terminoEvento = new Date('2021-01-01T18:00:00')
 
 const minutos = dayjs(terminoEvento).diff(dayjs(inicioEvento), 'minute')
 const horarios = '0'.repeat(minutos)
+const horariosInicializados = horarios.split('').map((h, i) => {
+	return dayjs(inicioEvento).add(i, 'minute').format('HH:mm')
+})
+
 
 const salas = [
-	{ nome: 'sala1', duracao: 3, horarios: horarios },
-	{ nome: 'sala2', duracao: 7, horarios: horarios },
+	{ nome: 'sala1', duracao: 8, horarios: horarios },
+	{ nome: 'sala2', duracao: 6, horarios: horarios },
 	{ nome: 'sala3', duracao: 5, horarios: horarios },
 	{ nome: 'sala4', duracao: 9, horarios: horarios },
 	{ nome: 'sala5', duracao: 10, horarios: horarios },
@@ -25,7 +29,7 @@ let grupos = [
 	{ nome: 'g', chegada: new Date('2021-01-01T09:00:00'), offset: 0, background: 'bg-teal-400' },
 	{ nome: 'h', chegada: new Date('2021-01-01T09:30:00'), offset: 0, background: 'bg-cyan-400' },
 	{ nome: 'i', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-sky-400' },
-	{ nome: 'j', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-blue-400' },
+	{ nome: 'j', chegada: new Date('2021-01-01T09:30:00'), offset: 0, background: 'bg-blue-400' },
 	{ nome: 'k', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-indigo-400' },
 	{ nome: 'l', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-rose-400' },
 ]
@@ -91,20 +95,9 @@ function calcularOrdemVisitas(grupo) {
 	}
 
 	return salasCompletamenteOrdenadas
-
-
-	// const order = []
-	// for (const sala of salas) {
-	// 	const disponivel = '0'.repeat(sala.duracao)
-	// 	const offset = sala.horarios.indexOf(disponivel, grupo.offset)
-	// 	order.push({ order: (offset + 1) * -1000, sala })
-	// }
-	// const final = []
-	// order.sort((a, b) => (b.order + b.sala.duracao) - (a.order + a.sala.duracao)).forEach(o => final.push(o.sala))
-	// return final
 }
 
-function visitas() {
+function calcularVisitas() {
 	for (const grupo of grupos) {
 		const salasOrdenadas = calcularOrdemVisitas(grupo)
 		for (const sala of salasOrdenadas) {
@@ -112,18 +105,68 @@ function visitas() {
 			agendarHorario(grupo, sala, proximoHorario)
 		}
 	}
+}
+
+function visitas() {
+	calcularVisitas()
 	return salas
 }
 
 function findBackgroundGrupo(nome) {
-	if (nome === 0) {
+	if (nome === '0') {
 		return 'bg-white'
 	}
 	return grupos.find(grupo => grupo.nome === nome).background
 }
 
+function getHorarios(grupo, sala) {
+	const horarios = sala.horarios.split('')
+	const indices = []
+	for (const [index, h] of horarios.entries()) {
+		if (h === grupo.nome) {
+			indices.push(index)
+		}
+	}
+
+	const horariosReais = indices.map(i => {
+		return horariosInicializados[i]
+	})
+
+	return {
+		inicio: horariosReais[0],
+		termino: horariosReais[horariosReais.length - 1]
+	}
+}
+
+function horaParaMinutos(hora) {
+	const [horas, minutos] = hora.split(':').map(Number);
+	return horas * 60 + minutos;
+}
+
+function getRelatorio() {
+	calcularVisitas()
+	const relatorio = []
+
+	for (const grupo of grupos) {
+		const visitas = []
+		for (const sala of salas) {
+			const horarios = getHorarios(grupo, sala)
+			visitas.push({ sala: sala.nome, ...horarios })
+		}
+		relatorio.push({
+			dados: grupo, visitas: visitas.sort((a, b) => {
+				return horaParaMinutos(a.inicio) - horaParaMinutos(b.inicio)
+			})
+		})
+	}
+	return { grupos: relatorio };
+}
 
 
+
+
+calcularVisitas()
+const grupoA = getHorarios(grupos[0], salas[0])
 
 
 

@@ -39,4 +39,36 @@
 	</table>
 </div>
 
+<div x-data="getRelatorio()">
+	<template x-for="grupo in grupos" :key="grupo.dados.nome">
+		<div class="w-3/6 border border-slate-500 m-2">
+			<h3 x-text="grupo.dados.nome" class="text-lg font-semibold text-center"></h3>
+			<p>
+				<span class="font-semibold">Hora de chegada:</span>
+				<span x-text="dayjs(grupo.dados.chegada).format('DD/MM/YYYY HH:mm')"></span>
+			</p>
+			<div>
+				<table class="w-full table-fixed border-collapse border border-slate-500">
+					<thead>
+						<tr>
+							<th class="px-1 border border-slate-700">Sala</th>
+							<th class="px-1 border border-slate-700">Horário Início</th>
+							<th class="px-1 border border-slate-700">Horário Termino</th>
+						</tr>
+					</thead>
+					<tbody>
+						<template x-for="visita in grupo.visitas" :key="visita.sala">
+							<tr>
+								<td x-text="visita.sala" class="px-1 border border-slate-700"></td>
+								<td x-text="visita.inicio" class="px-1 border border-slate-700"></td>
+								<td x-text="visita.termino" class="px-1 border border-slate-700"></td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</template>
+</div>
+
 </html>
