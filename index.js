@@ -20,18 +20,18 @@ const salas = [
 ]
 
 let grupos = [
-	{ nome: 'a', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-red-400' },
-	{ nome: 'b', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-orange-400' },
-	{ nome: 'c', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-amber-400' },
-	{ nome: 'd', chegada: new Date('2021-01-01T08:10:00'), offset: 0, background: 'bg-yellow-400' },
-	{ nome: 'e', chegada: new Date('2021-01-01T08:16:00'), offset: 0, background: 'bg-lime-400' },
-	{ nome: 'f', chegada: new Date('2021-01-01T08:13:00'), offset: 0, background: 'bg-emerald-400' },
-	{ nome: 'g', chegada: new Date('2021-01-01T09:00:00'), offset: 0, background: 'bg-teal-400' },
-	{ nome: 'h', chegada: new Date('2021-01-01T09:30:00'), offset: 0, background: 'bg-cyan-400' },
-	{ nome: 'i', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-sky-400' },
-	{ nome: 'j', chegada: new Date('2021-01-01T09:30:00'), offset: 0, background: 'bg-blue-400' },
-	{ nome: 'k', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-indigo-400' },
-	{ nome: 'l', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-rose-400' },
+	{ id: 'a', nome: 'Escola Maria Rezende', monitor: 'Raik Suel', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-red-400' },
+	{ id: 'b', nome: 'Escola Souza Lopes', monitor: 'Diego Maciel', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-orange-400' },
+	{ id: 'c', nome: 'Escola Normal', monitor: 'Sandra Novais', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-amber-400' },
+	{ id: 'd', nome: 'Escola Clarita', monitor: 'Gisenilda', chegada: new Date('2021-01-01T08:10:00'), offset: 0, background: 'bg-yellow-400' },
+	{ id: 'e', nome: 'IFNMG', monitor: 'Baianim', chegada: new Date('2021-01-01T08:16:00'), offset: 0, background: 'bg-lime-400' },
+	{ id: 'f', nome: 'Escola Municipal Lourdes', monitor: 'Licia', chegada: new Date('2021-01-01T08:13:00'), offset: 0, background: 'bg-emerald-400' },
+	{ id: 'g', nome: 'Escola José Almeida', monitor: 'Tiago Enrique', chegada: new Date('2021-01-01T09:00:00'), offset: 0, background: 'bg-teal-400' },
+	{ id: 'h', nome: 'Escola Clemente Viana', monitor: 'Tiago Lages', chegada: new Date('2021-01-01T09:30:00'), offset: 0, background: 'bg-cyan-400' },
+	{ id: 'i', nome: 'Escola São Lucas', monitor: 'Letsilane', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-sky-400' },
+	{ id: 'j', nome: 'Escola Patricia Villela', monitor: 'Guilherme', chegada: new Date('2021-01-01T09:30:00'), offset: 0, background: 'bg-blue-400' },
+	{ id: 'k', nome: 'Escola Hugo Novais', monitor: 'Eugênio', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-indigo-400' },
+	{ id: 'l', nome: 'Escola Pedro Antônio', monitor: 'Gabriella', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-rose-400' },
 ]
 
 function inicializarOffsetGrupos() {
@@ -55,11 +55,11 @@ function obterHorarioMaisProximo(sala, offset) {
 
 function agendarHorario(grupo, sala, index) {
 	for (const i of Array(sala.duracao).keys()) {
-		sala.horarios = sala.horarios.substring(0, index + i) + grupo.nome + sala.horarios.substring(index + i + 1)
+		sala.horarios = sala.horarios.substring(0, index + i) + grupo.id + sala.horarios.substring(index + i + 1)
 	}
 
 	for (const g of grupos) {
-		if (g.nome === grupo.nome) {
+		if (g.id === grupo.id) {
 			g.offset = index + sala.duracao
 		}
 	}
@@ -112,18 +112,18 @@ function visitas() {
 	return salas
 }
 
-function findBackgroundGrupo(nome) {
-	if (nome === '0') {
+function findBackgroundGrupo(id) {
+	if (id === '0') {
 		return 'bg-white'
 	}
-	return grupos.find(grupo => grupo.nome === nome).background
+	return grupos.find(grupo => grupo.id === id).background
 }
 
 function getHorarios(grupo, sala) {
 	const horarios = sala.horarios.split('')
 	const indices = []
 	for (const [index, h] of horarios.entries()) {
-		if (h === grupo.nome) {
+		if (h === grupo.id) {
 			indices.push(index)
 		}
 	}

@@ -42,10 +42,14 @@
 <div x-data="getRelatorio()">
 	<template x-for="grupo in grupos" :key="grupo.dados.nome">
 		<div class="w-3/6 border border-slate-500 m-2">
-			<h3 x-text="grupo.dados.nome" class="text-lg font-semibold text-center"></h3>
+			<h3 x-text="grupo.dados.nome + ' (' + grupo.dados.id + ')'" class="text-lg font-semibold text-center"></h3>
 			<p>
 				<span class="font-semibold">Hora de chegada:</span>
 				<span x-text="dayjs(grupo.dados.chegada).format('DD/MM/YYYY HH:mm')"></span>
+			</p>
+			<p>
+				<span class="font-semibold">Monitor responsável:</span>
+				<span x-text="grupo.dados.monitor"></span>
 			</p>
 			<div>
 				<table class="w-full table-fixed border-collapse border border-slate-500">
