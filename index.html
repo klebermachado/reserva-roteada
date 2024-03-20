@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="./index.js"></script>
+	<title>Document</title>
+
+</head>
+
+<body>
+
+</body>
+<div x-data="visitas()">
+	<table class="table-fixed border-collapse border border-slate-500">
+		<thead>
+			<tr>
+				<th class="px-1 border-x border-b border-slate-700">Nome</th>
+				<template x-for="horario in horarios.length">
+					<th x-text="horario" class="px-1 border-x border-b border-slate-700"></th>
+				</template>
+			</tr>
+		</thead>
+		<tbody>
+			<template x-for="sala in salas">
+				<tr>
+					<td x-text="sala.nome" class=""></td>
+					<template x-for="horario in sala.horarios.length">
+						<td x-text="sala.horarios[horario - 1]" class="px-1 border-x border-slate-700"
+							:class="findBackgroundGrupo(sala.horarios[horario - 1])"></td>
+					</template>
+				</tr>
+			</template>
+		</tbody>
+	</table>
+</div>
+
+</html>
