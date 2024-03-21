@@ -8,71 +8,71 @@
 	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script src="./index.js"></script>
-	<title>Document</title>
+	<title>Relatório Geral</title>
 
 </head>
 
 <body>
-
-</body>
-<div x-data="visitas()">
-	<table class="table-fixed border-collapse border border-slate-500">
-		<thead>
-			<tr>
-				<th class="px-1 border-x border-b border-slate-700">Nome</th>
-				<template x-for="horario in horarios.length">
-					<th x-text="horario" class="px-1 border-x border-b border-slate-700"></th>
-				</template>
-			</tr>
-		</thead>
-		<tbody>
-			<template x-for="sala in salas">
-				<tr>
-					<td x-text="sala.nome" class=""></td>
-					<template x-for="horario in sala.horarios.length">
-						<td x-text="sala.horarios[horario - 1]" class="px-1 border-x border-slate-700"
-							:class="findBackgroundGrupo(sala.horarios[horario - 1])"></td>
-					</template>
-				</tr>
-			</template>
-		</tbody>
-	</table>
-</div>
-
-<div x-data="getRelatorio()">
-	<template x-for="grupo in grupos" :key="grupo.dados.nome">
-		<div class="w-3/6 border border-slate-500 m-2">
-			<h3 x-text="grupo.dados.nome + ' (' + grupo.dados.id + ')'" class="text-lg font-semibold text-center"></h3>
-			<p>
-				<span class="font-semibold">Hora de chegada:</span>
-				<span x-text="dayjs(grupo.dados.chegada).format('DD/MM/YYYY HH:mm')"></span>
-			</p>
-			<p>
-				<span class="font-semibold">Monitor responsável:</span>
-				<span x-text="grupo.dados.monitor"></span>
-			</p>
+	<header class="mb-8 mt-4">
+		<ul class="flex gap-x-4 justify-center">
+			<li><a href="index.html" class="bg-green-200 rounded-md p-2 px-4 hover:bg-green-300">Formulário</a></li>
+			<li><a href="relatorio.html" class="bg-green-200 rounded-md p-2 px-4 hover:bg-green-300">Relatório</a></li>
+		</ul>
+	</header>
+	<form class="mx-8" x-data="">
+		<div class="grid gap-6 mb-6 md:grid-cols-2">
 			<div>
-				<table class="w-full table-fixed border-collapse border border-slate-500">
-					<thead>
-						<tr>
-							<th class="px-1 border border-slate-700">Sala</th>
-							<th class="px-1 border border-slate-700">Horário Início</th>
-							<th class="px-1 border border-slate-700">Horário Termino</th>
-						</tr>
-					</thead>
-					<tbody>
-						<template x-for="visita in grupo.visitas" :key="visita.sala">
-							<tr>
-								<td x-text="visita.sala" class="px-1 border border-slate-700"></td>
-								<td x-text="visita.inicio" class="px-1 border border-slate-700"></td>
-								<td x-text="visita.termino" class="px-1 border border-slate-700"></td>
-							</tr>
-						</template>
-					</tbody>
-				</table>
+				<label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Identificador</label>
+				<input type="text" id="first_name"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+					placeholder="John" required />
+			</div>
+			<div>
+				<label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Nome do Grupo</label>
+				<input type="text" id="last_name"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+					placeholder="Doe" required />
+			</div>
+			<div>
+				<label for="company" class="block mb-2 text-sm font-medium text-gray-900">Monitor responsável</label>
+				<input type="text" id="company"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+					placeholder="Flowbite" required />
+			</div>
+			<div>
+				<label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Hora de início da visitação</label>
+				<input type="datetime-local" id="phone"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+					placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required />
 			</div>
 		</div>
-	</template>
-</div>
+
+		<button type="button" @click="inserirGrupo()"
+			class="text-white bg-blue-700 mb-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Inserir</button>
+	</form>
+
+	<hr />
+
+	<div class="ml-4">
+		<h1 class="my-4 font-bold">Grupos cadastrados</h1>
+		<div x-data="getGrupos()" class="">
+			<table class="border-collapse">
+				<tbody>
+					<template x-for="grupo in grupos">
+						<tr>
+							<td>
+								<label x-text="`(${grupo.id}) ${grupo.nome}`"></label>
+							</td>
+							<td>
+								<button type="button" @click="excluirGrupo(grupo.id)"
+									class="bg-slate-200 p-1 rounded-md hover:bg-slate-300 mb-2 ml-4 px-4">Excluir</button>
+							</td>
+						</tr>
+					</template>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
 
 </html>

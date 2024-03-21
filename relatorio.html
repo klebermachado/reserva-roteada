@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="./index.js"></script>
+	<title>Relatório Geral</title>
+
+</head>
+
+<body>
+
+</body>
+<header class="mb-8 mt-4">
+	<ul class="flex gap-x-4 justify-center">
+		<li><a href="index.html" class="bg-green-200 rounded-md p-2 px-4 hover:bg-green-300">Formulário</a></li>
+		<li><a href="relatorio.html" class="bg-green-200 rounded-md p-2 px-4 hover:bg-green-300">Relatório</a></li>
+	</ul>
+</header>
+<div x-data="visitas()">
+	<table class="table-fixed border-collapse border border-slate-500">
+		<thead>
+			<tr>
+				<th class="px-1 border-x border-b border-slate-700">Nome</th>
+				<template x-for="horario in horarios.length">
+					<th x-text="horario" class="px-1 border-x border-b border-slate-700"></th>
+				</template>
+			</tr>
+		</thead>
+		<tbody>
+			<template x-for="sala in salas">
+				<tr>
+					<td x-text="sala.nome" class=""></td>
+					<template x-for="horario in sala.horarios.length">
+						<td x-text="sala.horarios[horario - 1]" class="px-1 border-x border-slate-700"
+							:class="findBackgroundGrupo(sala.horarios[horario - 1])"></td>
+					</template>
+				</tr>
+			</template>
+		</tbody>
+	</table>
+</div>
+
+<div x-data="getRelatorio()">
+	<template x-for="grupo in grupos" :key="grupo.dados.nome">
+		<div class="w-3/6 border border-slate-500 m-2">
+			<h3 x-text="grupo.dados.nome + ' (' + grupo.dados.id + ')'" class="text-lg font-semibold text-center"></h3>
+			<p>
+				<span class="font-semibold">Hora de chegada:</span>
+				<span x-text="dayjs(grupo.dados.chegada).format('DD/MM/YYYY HH:mm')"></span>
+			</p>
+			<p>
+				<span class="font-semibold">Monitor responsável:</span>
+				<span x-text="grupo.dados.monitor"></span>
+			</p>
+			<div>
+				<table class="w-full table-fixed border-collapse border border-slate-500">
+					<thead>
+						<tr>
+							<th class="px-1 border border-slate-700">Sala</th>
+							<th class="px-1 border border-slate-700">Horário Início</th>
+							<th class="px-1 border border-slate-700">Horário Termino</th>
+						</tr>
+					</thead>
+					<tbody>
+						<template x-for="visita in grupo.visitas" :key="visita.sala">
+							<tr>
+								<td x-text="visita.sala" class="px-1 border border-slate-700"></td>
+								<td x-text="visita.inicio" class="px-1 border border-slate-700"></td>
+								<td x-text="visita.termino" class="px-1 border border-slate-700"></td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</template>
+</div>
+
+</html>

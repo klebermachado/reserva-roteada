@@ -162,6 +162,17 @@ function getRelatorio() {
 	return { grupos: relatorio };
 }
 
+function getGrupos() {
+	return { grupos }
+}
+
+function excluirGrupo(id) {
+	console.log(id)
+}
+
+function inserirGrupo() {
+	console.log('inserirGrupo')
+}
 
 
 
