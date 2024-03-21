@@ -34,6 +34,11 @@ let grupos = [
 	{ id: 'l', nome: 'Escola Pedro Antônio', monitor: 'Gabriella', chegada: new Date('2021-01-01T08:00:00'), offset: 0, background: 'bg-rose-400' },
 ]
 
+function boot() {
+	definirGrupoLocalstorage()
+	inicializarOffsetGrupos()
+}
+
 function inicializarOffsetGrupos() {
 	const grupoInicializado = []
 	for (const grupo of grupos) {
@@ -45,7 +50,34 @@ function inicializarOffsetGrupos() {
 	}
 	grupos = grupoInicializado
 }
-inicializarOffsetGrupos()
+
+function definirGrupoLocalstorage() {
+	if (!localStorage.getItem('grupos')) {
+		localStorage.setItem('grupos', JSON.stringify([]))
+	}
+}
+
+function getGrupos() {
+	return JSON.parse(localStorage.getItem('grupos'))
+}
+
+function setGrupo(grupo) {
+	const grupos = getGrupos()
+	console.log()
+	grupos.push(grupo)
+	localStorage.setItem('grupos', JSON.stringify(grupos))
+}
+
+function getProximoIdentificadorGrupo() {
+	const grupos = getGrupos()
+	if (grupos.length === 0) {
+		return 'a'
+	}
+	const ultimoGrupo = grupos[grupos.length - 1]
+	const chars = 'abcdefghijklmnopqrstuvwxyz'
+	const proximoIdentificador = chars[chars.indexOf(ultimoGrupo.id) + 1]
+	return proximoIdentificador
+}
 
 function obterHorarioMaisProximo(sala, offset) {
 	const disponivel = '0'.repeat(sala.duracao)
@@ -162,18 +194,38 @@ function getRelatorio() {
 	return { grupos: relatorio };
 }
 
-function getGrupos() {
-	return { grupos }
-}
-
 function excluirGrupo(id) {
-	console.log(id)
+	const grupos = getGrupos()
+	const gruposFiltrados = grupos.filter(grupo => grupo.id !== id)
+	localStorage.setItem('grupos', JSON.stringify(gruposFiltrados))
+
+	location.reload()
 }
 
-function inserirGrupo() {
-	console.log('inserirGrupo')
+function formularioCadastro() {
+	return {
+		identificador: getProximoIdentificadorGrupo(),
+		nome: '',
+		monitor: '',
+		chegada: '',
+		inserirGrupo() {
+			setGrupo({
+				id: this.identificador,
+				nome: this.nome,
+				monitor: this.monitor,
+				chegada: new Date(this.chegada),
+				offset: 0,
+			})
+
+			location.reload()
+		}
+	}
 }
 
+
+function listagem() {
+	return { gruposs: getGrupos() }
+}
 
 
 calcularVisitas()
@@ -199,3 +251,5 @@ const grupoA = getHorarios(grupos[0], salas[0])
 // 	console.log(sala.nome, sala.horarios)
 // }
 // console.log(grupos)
+
+boot()

@@ -19,35 +19,37 @@
 			<li><a href="relatorio.html" class="bg-green-200 rounded-md p-2 px-4 hover:bg-green-300">Relatório</a></li>
 		</ul>
 	</header>
-	<form class="mx-8" x-data="">
-		<div class="grid gap-6 mb-6 md:grid-cols-2">
+	<form class="mx-8" x-data="formularioCadastro()" @submit.prevent="inserirGrupo()">
+		<div class="grid gap-6 mb-6 md:grid-cols-[90px_1fr]">
 			<div>
 				<label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Identificador</label>
 				<input type="text" id="first_name"
-					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					placeholder="John" required />
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:opacity-50"
+					placeholder="" x-model="identificador" required disabled />
 			</div>
 			<div>
 				<label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Nome do Grupo</label>
 				<input type="text" id="last_name"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					placeholder="Doe" required />
+					placeholder="Escola Estadual..." x-model="nome" required />
 			</div>
+		</div>
+		<div class="grid gap-6 mb-6 md:grid-cols-2">
 			<div>
 				<label for="company" class="block mb-2 text-sm font-medium text-gray-900">Monitor responsável</label>
 				<input type="text" id="company"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					placeholder="Flowbite" required />
+					placeholder="José..." x-model="monitor" required />
 			</div>
 			<div>
 				<label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Hora de início da visitação</label>
 				<input type="datetime-local" id="phone"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required />
+					placeholder="123-45-678" x-model="chegada" required />
 			</div>
 		</div>
 
-		<button type="button" @click="inserirGrupo()"
+		<button type="submit"
 			class="text-white bg-blue-700 mb-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Inserir</button>
 	</form>
 
@@ -55,13 +57,16 @@
 
 	<div class="ml-4">
 		<h1 class="my-4 font-bold">Grupos cadastrados</h1>
-		<div x-data="getGrupos()" class="">
+		<div x-data="listagem()" class="">
 			<table class="border-collapse">
 				<tbody>
-					<template x-for="grupo in grupos">
+					<template x-for="grupo in gruposs">
 						<tr>
 							<td>
-								<label x-text="`(${grupo.id}) ${grupo.nome}`"></label>
+								<label x-text="`(${grupo.id}) ${grupo.nome} - `"></label>
+								<span x-text="dayjs(grupo.chegada).format('DD/MM/YYYY HH:mm')"
+									class="bg-slate-200 px-2 rounded-md text-xs"></span>
+								<span x-text="grupo.monitor" class="underline text-gray-700"></span>
 							</td>
 							<td>
 								<button type="button" @click="excluirGrupo(grupo.id)"
