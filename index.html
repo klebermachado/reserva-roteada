@@ -19,6 +19,19 @@
 			<li><a href="relatorio.html" class="bg-green-200 rounded-md p-2 px-4 hover:bg-green-300">Relatório</a></li>
 		</ul>
 	</header>
+
+	<div x-data="resumo()" class="mx-8">
+		<p>
+			<label class="font-bold">Início do Evento:</label>
+			<span x-text="dayjs(inicio).format('DD/MM/YYYY HH:mm')"></span>
+		</p>
+		<p>
+			<label class="font-bold">Término do Evento:</label>
+			<span x-text="dayjs(termino).format('DD/MM/YYYY HH:mm')"></span>
+		</p>
+	</div>
+
+	<hr class="my-4" />
 	<form class="mx-8" x-data="formularioCadastro()" @submit.prevent="inserirGrupo()">
 		<div class="grid gap-6 mb-6 md:grid-cols-[90px_1fr]">
 			<div>
@@ -43,7 +56,7 @@
 			</div>
 			<div>
 				<label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Hora de início da visitação</label>
-				<input type="datetime-local" id="phone"
+				<input type="time" id="phone"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 					placeholder="123-45-678" x-model="chegada" required />
 			</div>
@@ -64,8 +77,7 @@
 						<tr>
 							<td>
 								<label x-text="`(${grupo.id}) ${grupo.nome} - `"></label>
-								<span x-text="dayjs(grupo.chegada).format('DD/MM/YYYY HH:mm')"
-									class="bg-slate-200 px-2 rounded-md text-xs"></span>
+								<span x-text="dayjs(grupo.chegada).format('HH:mm')" class="bg-slate-200 px-2 rounded-md text-xs"></span>
 								<span x-text="grupo.monitor" class="underline text-gray-700"></span>
 							</td>
 							<td>

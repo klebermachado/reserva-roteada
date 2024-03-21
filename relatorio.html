@@ -37,7 +37,7 @@
 					<td x-text="sala.nome" class=""></td>
 					<template x-for="horario in sala.horarios.length">
 						<td x-text="sala.horarios[horario - 1]" class="px-1 border-x border-slate-700"
-							:class="findBackgroundGrupo(sala.horarios[horario - 1])"></td>
+							:style="`background-color: ${findBackgroundGrupo(sala.horarios[horario - 1])}`"></td>
 					</template>
 				</tr>
 			</template>
@@ -46,12 +46,12 @@
 </div>
 
 <div x-data="getRelatorio()">
-	<template x-for="grupo in grupos" :key="grupo.dados.nome">
+	<template x-for="grupo in grupos" :key="grupo.dados.id">
 		<div class="w-3/6 border border-slate-500 m-2">
 			<h3 x-text="grupo.dados.nome + ' (' + grupo.dados.id + ')'" class="text-lg font-semibold text-center"></h3>
 			<p>
 				<span class="font-semibold">Hora de chegada:</span>
-				<span x-text="dayjs(grupo.dados.chegada).format('DD/MM/YYYY HH:mm')"></span>
+				<span x-text="dayjs(grupo.dados.chegada).format('HH:mm')"></span>
 			</p>
 			<p>
 				<span class="font-semibold">Monitor responsável:</span>
