@@ -166,12 +166,12 @@ function findBackgroundGrupo(id) {
 	const colors = [
 		"#FF5733", "#33FF57", "#3357FF",
 		"#FF33FF", "#FFFF33", "#33FFFF",
-		"#F0F8FF", "#FAEBD7", "#00FFFF",
-		"#7FFFD4", "#F0FFFF", "#F5F5DC",
-		"#FFE4C4", "#000000", "#0000FF",
+		"#7293af", "#FAEBD7", "#00FFFF",
+		"#7FFFD4", "#769b08", "#876c2e",
+		"#d99072", "#000000", "#0000FF",
 		"#8A2BE2", "#A52A2A", "#DEB887",
 		"#5F9EA0", "#7FFF00", "#D2691E",
-		"#FF7F50", "#6495ED", "#FFF8DC"
+		"#FF7F50", "#6495ED", "#c3ade5"
 	];
 
 
